@@ -32,6 +32,7 @@ typedef struct {
   cache_t *fifo_ghost;
   cache_t *main_cache;
   bool hit_on_ghost;
+  int64_t last_sizeof_obj_ins_to_main;
 
   int64_t n_obj_admit_to_fifo;
   int64_t n_obj_admit_to_main;
@@ -39,6 +40,8 @@ typedef struct {
   int64_t n_byte_admit_to_fifo;
   int64_t n_byte_admit_to_main;
   int64_t n_byte_move_to_main;
+  int64_t n_times_main_occupied_more_than_allowed;
+  int64_t n_times_fifo_evicted_more_than_required;
 
   int move_to_main_threshold;
   double fifo_size_ratio;
@@ -75,12 +78,19 @@ static void S3FIFO_parse_params(cache_t *cache,
 
 static void S3FIFO_evict_fifo(cache_t *cache, const request_t *req);
 static void S3FIFO_evict_main(cache_t *cache, const request_t *req);
+static void S3FIFO_print_info(const cache_t *cache);
 
 // ***********************************************************************
 // ****                                                               ****
 // ****                   end user facing functions                   ****
 // ****                                                               ****
 // ***********************************************************************
+
+void S3FIFO_print_info(const cache_t *cache) {
+  S3FIFO_params_t *params = (S3FIFO_params_t *)cache->eviction_params;
+  printf("\n====> No. of times FIFO evicted more: %s\n", params->n_times_fifo_evicted_more_than_required);
+  printf("\n====> No. of times MAIN size is more: %s\n", params->n_times_main_occupied_more_than_allowed);
+}
 
 cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
                      const char *cache_specific_params) {
@@ -97,6 +107,7 @@ cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
   cache->get_n_obj = S3FIFO_get_n_obj;
   cache->get_occupied_byte = S3FIFO_get_occupied_byte;
   cache->can_insert = S3FIFO_can_insert;
+  cache->print_cache = S3FIFO_print_info;
 
   cache->obj_md_size = 0;
 
@@ -105,6 +116,9 @@ cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
   S3FIFO_params_t *params = (S3FIFO_params_t *)cache->eviction_params;
   params->req_local = new_request();
   params->hit_on_ghost = false;
+  params->last_sizeof_obj_ins_to_main = 0;
+  params->n_times_fifo_evicted_more_than_required = 0;
+  params->n_times_main_occupied_more_than_allowed = 0;
 
   S3FIFO_parse_params(cache, DEFAULT_CACHE_PARAMS);
   if (cache_specific_params != NULL) {
@@ -314,6 +328,8 @@ static void S3FIFO_evict_fifo(cache_t *cache, const request_t *req) {
   cache_t *main = params->main_cache;
 
   bool has_evicted = false;
+  uint32_t bytes_evicted = 0;
+  bool insert_to_main = false;
   while (!has_evicted && fifo->get_occupied_byte(fifo) > 0) {
     // evict from FIFO
     cache_obj_t *obj_to_evict = fifo->to_evict(fifo, req);
@@ -329,9 +345,11 @@ static void S3FIFO_evict_fifo(cache_t *cache, const request_t *req) {
       // freq is updated in cache_find_base
       params->n_obj_move_to_main += 1;
       params->n_byte_move_to_main += obj_to_evict->obj_size;
+      bytes_evicted += obj_to_evict->obj_size;
 
       cache_obj_t *new_obj = main->insert(main, params->req_local);
       new_obj->misc.freq = obj_to_evict->misc.freq;
+      insert_to_main = true;
 #if defined(TRACK_EVICTION_V_AGE)
       new_obj->create_time = obj_to_evict->create_time;
     } else {
@@ -351,11 +369,20 @@ static void S3FIFO_evict_fifo(cache_t *cache, const request_t *req) {
         ghost->get(ghost, params->req_local);
       }
       has_evicted = true;
+      bytes_evicted += params->req_local->obj_size;
     }
 
     // remove from fifo, but do not update stat
     bool removed = fifo->remove(fifo, params->req_local->obj_id);
     assert(removed);
+    if (bytes_evicted > req->obj_size) {
+      params->n_times_fifo_evicted_more_than_required++;
+    }
+    if (insert_to_main) {
+      params->last_sizeof_obj_ins_to_main = req->obj_size;
+    } else {
+      params->last_sizeof_obj_ins_to_main = 0;
+    }
   }
 }
 
@@ -424,6 +451,9 @@ static void S3FIFO_evict(cache_t *cache, const request_t *req) {
 
   if (main->get_occupied_byte(main) > main->cache_size ||
       fifo->get_occupied_byte(fifo) == 0) {
+    if (main->get_occupied_byte(main) > main->cache_size + params->last_sizeof_obj_ins_to_main) {
+      params->n_times_main_occupied_more_than_allowed++;
+    }
     return S3FIFO_evict_main(cache, req);
   }
   return S3FIFO_evict_fifo(cache, req);

@@ -78,6 +78,9 @@ void simulate(reader_t *reader, cache_t *cache, int report_interval,
 
 #pragma GCC diagnostic pop
   printf("%s", output_str);
+  if (cache->print_cache != NULL) {
+    cache->print_cache(cache);
+  }
 
   FILE *output_file = fopen(ofilepath, "a");
   if (output_file == NULL) {
