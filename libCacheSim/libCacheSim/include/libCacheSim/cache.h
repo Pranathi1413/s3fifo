@@ -63,7 +63,7 @@ typedef int64_t (*cache_get_n_obj_func_ptr)(const cache_t *);
 
 typedef void (*cache_print_cache_func_ptr)(const cache_t *);
 
-typedef char *(*cache_additional_metrics_func_ptr)(cache_t *);
+typedef char *(*cache_additional_metrics_func_ptr)(const cache_t *);
 
 
 // #define EVICTION_AGE_ARRAY_SZE 40

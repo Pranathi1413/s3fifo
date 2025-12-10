@@ -96,6 +96,7 @@ char* S3FIFO_additional_metrics(const cache_t *cache) {
 
   n += snprintf(output_str + n, METRICS_STR_LEN - n - 1, 
     "No. of times MAIN size is more: %d\n", params->n_times_main_occupied_more_than_allowed);
+  return output_str;
 }
 
 cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
