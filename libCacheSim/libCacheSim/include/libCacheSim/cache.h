@@ -63,6 +63,9 @@ typedef int64_t (*cache_get_n_obj_func_ptr)(const cache_t *);
 
 typedef void (*cache_print_cache_func_ptr)(const cache_t *);
 
+typedef char *(*cache_additional_metrics_func_ptr)(cache_t *);
+
+
 // #define EVICTION_AGE_ARRAY_SZE 40
 #define EVICTION_AGE_ARRAY_SZE 320
 #define EVICTION_AGE_LOG_BASE 1.08
@@ -84,6 +87,7 @@ typedef struct {
   int64_t expired_obj_cnt;
   int64_t expired_bytes;
   char cache_name[CACHE_NAME_ARRAY_LEN];
+  char *additional_metrics_print_string;
 } cache_stat_t;
 
 struct hashtable;
@@ -104,6 +108,7 @@ struct cache {
   cache_get_occupied_byte_func_ptr get_occupied_byte;
   cache_get_n_obj_func_ptr get_n_obj;
   cache_print_cache_func_ptr print_cache;
+  cache_additional_metrics_func_ptr get_additional_metrics_string;
 
   admissioner_t *admissioner;
 

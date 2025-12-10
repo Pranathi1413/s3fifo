@@ -68,7 +68,9 @@ int main(int argc, char **argv) {
              (double)result[i].n_miss / (double)result[i].n_req,
              (double)result[i].n_miss_byte / (double)result[i].n_req_byte);
     printf("%s", output_str);
+    printf("\nAdditional metrics\n%s\n", result[i].additional_metrics_print_string);
     fprintf(output_file, "%s", output_str);
+    fprintf(output_file, "\nAdditional metrics\n%s\n", result[i].additional_metrics_print_string);
   }
   fclose(output_file);
 

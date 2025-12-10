@@ -122,6 +122,7 @@ static void _simulate(gpointer data, gpointer user_data) {
   result[idx].occupied_byte = local_cache->occupied_byte;
   strncpy(result[idx].cache_name, local_cache->cache_name,
           CACHE_NAME_ARRAY_LEN);
+  result[idx].additional_metrics_print_string = local_cache->get_additional_metrics_string(local_cache);
 
   // report progress
   g_mutex_lock(&(params->mtx));

@@ -78,7 +78,7 @@ static void S3FIFO_parse_params(cache_t *cache,
 
 static void S3FIFO_evict_fifo(cache_t *cache, const request_t *req);
 static void S3FIFO_evict_main(cache_t *cache, const request_t *req);
-static void S3FIFO_print_info(const cache_t *cache);
+static char* S3FIFO_additional_metrics(const cache_t *cache);
 
 // ***********************************************************************
 // ****                                                               ****
@@ -86,10 +86,16 @@ static void S3FIFO_print_info(const cache_t *cache);
 // ****                                                               ****
 // ***********************************************************************
 
-void S3FIFO_print_info(const cache_t *cache) {
+char* S3FIFO_additional_metrics(const cache_t *cache) {
   S3FIFO_params_t *params = (S3FIFO_params_t *)cache->eviction_params;
-  printf("\n====> No. of times FIFO evicted more: %d\n", params->n_times_fifo_evicted_more_than_required);
-  printf("\n====> No. of times MAIN size is more: %d\n", params->n_times_main_occupied_more_than_allowed);
+  #define METRICS_STR_LEN 1024
+  char output_str[METRICS_STR_LEN];
+  int n = snprintf(
+      output_str, METRICS_STR_LEN - 1,
+      "No. of times FIFO evicted more: %d\n", params->n_times_fifo_evicted_more_than_required);
+
+  n += snprintf(output_str + n, METRICS_STR_LEN - n - 1, 
+    "No. of times MAIN size is more: %d\n", params->n_times_main_occupied_more_than_allowed);
 }
 
 cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
@@ -107,7 +113,7 @@ cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
   cache->get_n_obj = S3FIFO_get_n_obj;
   cache->get_occupied_byte = S3FIFO_get_occupied_byte;
   cache->can_insert = S3FIFO_can_insert;
-  cache->print_cache = S3FIFO_print_info;
+  cache->get_additional_metrics_string = S3FIFO_additional_metrics;
 
   cache->obj_md_size = 0;
 

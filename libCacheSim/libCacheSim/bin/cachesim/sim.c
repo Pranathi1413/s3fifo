@@ -78,9 +78,8 @@ void simulate(reader_t *reader, cache_t *cache, int report_interval,
 
 #pragma GCC diagnostic pop
   printf("%s", output_str);
-  if (cache->print_cache != NULL) {
-    cache->print_cache(cache);
-  }
+  char* additional_metrics = cache->get_additional_metrics_string(cache);
+  printf("\nAdditional metrics\n%s\n", additional_metrics);
 
   FILE *output_file = fopen(ofilepath, "a");
   if (output_file == NULL) {
@@ -88,6 +87,7 @@ void simulate(reader_t *reader, cache_t *cache, int report_interval,
     exit(1);
   }
   fprintf(output_file, "%s\n", output_str);
+  fprintf(output_file, "\nAdditional metrics\n%s\n", additional_metrics);
   fclose(output_file);
 
 #if defined(TRACK_EVICTION_V_AGE)
