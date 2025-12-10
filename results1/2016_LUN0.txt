@@ -1,0 +1,5 @@
+[32m[INFO]  12-09-2025 22:11:45 cli_reader_utils.c:262  (tid=23376278471872): calculating working set size...
+[0m[32m[INFO]  12-09-2025 22:12:21 cli_reader_utils.c:279  (tid=23376278471872): working set size: 64548999 object 64548999 byte
+[0m[32m[INFO]  12-09-2025 22:12:21 cli_parser.c:512  (tid=23376278471872): trace path: libCacheSim/data1/2016_LUN0.oracleGeneral.zst, trace_type ORACLE_GENERAL_TRACE, ofilepath 2016_LUN0.oracleGeneral.zst.cachesim, 28 threads, warmup -1 sec, total 1 algo x 8 size = 8 caches, s3fifo, ignore object size
+[0m[32m[INFO]  12-09-2025 22:12:21 simulator.c:294  (tid=23376278471872): simulate_with_multi_caches starts computation, num_warmup_req 0, start cache S3FIFO-0.1000-2 size 63KiB, end cache S3FIFO-0.1000-2 size 49MiB, 8 caches, 28 threads, please wait
+[0m

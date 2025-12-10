@@ -88,8 +88,8 @@ static void S3FIFO_print_info(const cache_t *cache);
 
 void S3FIFO_print_info(const cache_t *cache) {
   S3FIFO_params_t *params = (S3FIFO_params_t *)cache->eviction_params;
-  printf("\n====> No. of times FIFO evicted more: %s\n", params->n_times_fifo_evicted_more_than_required);
-  printf("\n====> No. of times MAIN size is more: %s\n", params->n_times_main_occupied_more_than_allowed);
+  printf("\n====> No. of times FIFO evicted more: %d\n", params->n_times_fifo_evicted_more_than_required);
+  printf("\n====> No. of times MAIN size is more: %d\n", params->n_times_main_occupied_more_than_allowed);
 }
 
 cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
