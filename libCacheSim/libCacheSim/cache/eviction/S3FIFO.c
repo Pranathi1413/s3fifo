@@ -42,6 +42,8 @@ typedef struct {
   int64_t n_byte_move_to_main;
   int64_t n_times_main_occupied_more_than_allowed;
   int64_t n_times_fifo_evicted_more_than_required;
+  int64_t n_hits_on_ghost;
+  int64_t n_misses;
 
   int move_to_main_threshold;
   double fifo_size_ratio;
@@ -90,11 +92,13 @@ char* S3FIFO_additional_metrics(const cache_t *cache) {
   S3FIFO_params_t *params = (S3FIFO_params_t *)cache->eviction_params;
   const char *fmt =
         "No. of times FIFO evicted more: %d\n"
-        "No. of times MAIN size is more: %d\n";
+        "No. of times MAIN size is more: %d\n"
+        "Ratio ghost hits to cache misses: %.4lf\n";
 
     int need = snprintf(NULL, 0, fmt,
                         params->n_times_fifo_evicted_more_than_required,
-                        params->n_times_main_occupied_more_than_allowed);
+                        params->n_times_main_occupied_more_than_allowed,
+                        (double)params->n_hits_on_ghost/params->n_misses);
     if (need < 0) return NULL;
 
     char *s = (char*)malloc((size_t)need + 1);
@@ -102,7 +106,8 @@ char* S3FIFO_additional_metrics(const cache_t *cache) {
 
     snprintf(s, (size_t)need + 1, fmt,
              params->n_times_fifo_evicted_more_than_required,
-             params->n_times_main_occupied_more_than_allowed);
+             params->n_times_main_occupied_more_than_allowed,
+            (double)params->n_hits_on_ghost/params->n_misses);
     return s;
 }
 
@@ -133,6 +138,8 @@ cache_t *S3FIFO_init(const common_cache_params_t ccache_params,
   params->last_sizeof_obj_ins_to_main = 0;
   params->n_times_fifo_evicted_more_than_required = 0;
   params->n_times_main_occupied_more_than_allowed = 0;
+  params->n_hits_on_ghost = 0;
+  params->n_misses = 0;
 
   S3FIFO_parse_params(cache, DEFAULT_CACHE_PARAMS);
   if (cache_specific_params != NULL) {
@@ -272,6 +279,10 @@ static cache_obj_t *S3FIFO_find(cache_t *cache, const request_t *req,
   if (obj != NULL) {
     obj->S3FIFO.freq += 1;
   }
+  else {
+    params->n_misses += 1;
+  }
+
 
   return obj;
 }
@@ -294,6 +305,7 @@ static cache_obj_t *S3FIFO_insert(cache_t *cache, const request_t *req) {
   if (params->hit_on_ghost) {
     /* insert into the ARC */
     params->hit_on_ghost = false;
+    params->n_hits_on_ghost += 1;
     params->n_obj_admit_to_main += 1;
     params->n_byte_admit_to_main += req->obj_size;
     obj = params->main_cache->insert(params->main_cache, req);
