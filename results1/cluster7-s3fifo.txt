@@ -1,8 +1,26 @@
-[32m[INFO]  12-10-2025 00:48:03 cli_reader_utils.c:262  (tid=22567645709504): calculating working set size...
-[0m[32m[INFO]  12-10-2025 00:49:14 cli_reader_utils.c:279  (tid=22567645709504): working set size: 4462180 object 4462180 byte
-[0m[32m[INFO]  12-10-2025 00:49:14 cli_parser.c:512  (tid=22567645709504): trace path: libCacheSim/data1/cluster7.oracleGeneral.zst, trace_type ORACLE_GENERAL_TRACE, ofilepath cluster7.oracleGeneral.zst.cachesim, 2 threads, warmup -1 sec, total 1 algo x 3 size = 3 caches, s3fifo, ignore object size
-[0m[32m[INFO]  12-10-2025 00:49:14 simulator.c:294  (tid=22567645709504): simulate_with_multi_caches starts computation, num_warmup_req 0, start cache S3FIFO-0.1000-2 size 4KiB, end cache S3FIFO-0.1000-2 size 436KiB, 3 caches, 2 threads, please wait
+[32m[INFO]  12-10-2025 15:39:26 cli_reader_utils.c:262  (tid=22932688803008): calculating working set size...
+[0m[32m[INFO]  12-10-2025 15:40:37 cli_reader_utils.c:279  (tid=22932688803008): working set size: 4462180 object 4462180 byte
+[0m[32m[INFO]  12-10-2025 15:40:37 cli_parser.c:512  (tid=22932688803008): trace path: libCacheSim/data1/cluster7.oracleGeneral.zst, trace_type ORACLE_GENERAL_TRACE, ofilepath cluster7.oracleGeneral.zst.cachesim, 2 threads, warmup -1 sec, total 1 algo x 3 size = 3 caches, s3fifo, ignore object size
+[0m[32m[INFO]  12-10-2025 15:40:37 simulator.c:295  (tid=22932688803008): simulate_with_multi_caches starts computation, num_warmup_req 0, start cache S3FIFO-0.1000-2 size 4KiB, end cache S3FIFO-0.1000-2 size 436KiB, 3 caches, 2 threads, please wait
 [0m
 result/cluster7.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size     4462, 1044513075 req, miss ratio 0.2296, byte miss ratio 0.2296
+
+Additional metrics
+No. of times FIFO evicted more: 117553451
+No. of times MAIN size is more: 70584429
+Ratio ghost hits to cache misses: 0.0462
+
 result/cluster7.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size    44621, 1044513075 req, miss ratio 0.1899, byte miss ratio 0.1899
+
+Additional metrics
+No. of times FIFO evicted more: 114831328
+No. of times MAIN size is more: 74167888
+Ratio ghost hits to cache misses: 0.0310
+
 result/cluster7.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size   446218, 1044513075 req, miss ratio 0.1203, byte miss ratio 0.1203
+
+Additional metrics
+No. of times FIFO evicted more: 97264765
+No. of times MAIN size is more: 96083906
+Ratio ghost hits to cache misses: 0.1062
+

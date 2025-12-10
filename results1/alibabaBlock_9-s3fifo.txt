@@ -1,8 +1,26 @@
-[32m[INFO]  12-10-2025 00:48:03 cli_reader_utils.c:262  (tid=23122382222528): calculating working set size...
-[0m[32m[INFO]  12-10-2025 00:48:05 cli_reader_utils.c:279  (tid=23122382222528): working set size: 723301 object 723301 byte
-[0m[32m[INFO]  12-10-2025 00:48:05 cli_parser.c:512  (tid=23122382222528): trace path: libCacheSim/data1/alibabaBlock_9.oracleGeneral.zst, trace_type ORACLE_GENERAL_TRACE, ofilepath alibabaBlock_9.oracleGeneral.zst.cachesim, 2 threads, warmup -1 sec, total 1 algo x 3 size = 3 caches, s3fifo, ignore object size
-[0m[32m[INFO]  12-10-2025 00:48:05 simulator.c:294  (tid=23122382222528): simulate_with_multi_caches starts computation, num_warmup_req 0, start cache S3FIFO-0.1000-2 size 723, end cache S3FIFO-0.1000-2 size 71KiB, 3 caches, 2 threads, please wait
+[32m[INFO]  12-10-2025 15:39:26 cli_reader_utils.c:262  (tid=22583580390592): calculating working set size...
+[0m[32m[INFO]  12-10-2025 15:39:28 cli_reader_utils.c:279  (tid=22583580390592): working set size: 723301 object 723301 byte
+[0m[32m[INFO]  12-10-2025 15:39:28 cli_parser.c:512  (tid=22583580390592): trace path: libCacheSim/data1/alibabaBlock_9.oracleGeneral.zst, trace_type ORACLE_GENERAL_TRACE, ofilepath alibabaBlock_9.oracleGeneral.zst.cachesim, 2 threads, warmup -1 sec, total 1 algo x 3 size = 3 caches, s3fifo, ignore object size
+[0m[32m[INFO]  12-10-2025 15:39:28 simulator.c:295  (tid=22583580390592): simulate_with_multi_caches starts computation, num_warmup_req 0, start cache S3FIFO-0.1000-2 size 723, end cache S3FIFO-0.1000-2 size 71KiB, 3 caches, 2 threads, please wait
 [0m
 result/alibabaBlock_9.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size      723, 22682239 req, miss ratio 0.1622, byte miss ratio 0.1622
+
+Additional metrics
+No. of times FIFO evicted more: 164999
+No. of times MAIN size is more: 211567
+Ratio ghost hits to cache misses: 0.0541
+
 result/alibabaBlock_9.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size     7233, 22682239 req, miss ratio 0.1316, byte miss ratio 0.1316
+
+Additional metrics
+No. of times FIFO evicted more: 208385
+No. of times MAIN size is more: 56252
+Ratio ghost hits to cache misses: 0.0099
+
 result/alibabaBlock_9.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size    72330, 22682239 req, miss ratio 0.0865, byte miss ratio 0.0865
+
+Additional metrics
+No. of times FIFO evicted more: 75822
+No. of times MAIN size is more: 75503
+Ratio ghost hits to cache misses: 0.0584
+
