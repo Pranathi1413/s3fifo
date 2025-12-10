@@ -10,4 +10,6 @@ __pycache__
 **/dep/**
 .DS_Store
 .vscode
+logs/*
+slurm/*
 

@@ -1,0 +1,8 @@
+[32m[INFO]  12-10-2025 00:48:03 cli_reader_utils.c:262  (tid=22784707351744): calculating working set size...
+[0m[32m[INFO]  12-10-2025 00:48:21 cli_reader_utils.c:279  (tid=22784707351744): working set size: 29030282 object 29030282 byte
+[0m[32m[INFO]  12-10-2025 00:48:21 cli_parser.c:512  (tid=22784707351744): trace path: libCacheSim/data1/meta_rprn.oracleGeneral.zst, trace_type ORACLE_GENERAL_TRACE, ofilepath meta_rprn.oracleGeneral.zst.cachesim, 2 threads, warmup -1 sec, total 1 algo x 3 size = 3 caches, s3fifo, ignore object size
+[0m[32m[INFO]  12-10-2025 00:48:21 simulator.c:294  (tid=22784707351744): simulate_with_multi_caches starts computation, num_warmup_req 0, start cache S3FIFO-0.1000-2 size 28KiB, end cache S3FIFO-0.1000-2 size 3MiB, 3 caches, 2 threads, please wait
+[0m
+result/meta_rprn.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size    29030, 88470732 req, miss ratio 0.5765, byte miss ratio 0.5765
+result/meta_rprn.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size   290302, 88470732 req, miss ratio 0.5116, byte miss ratio 0.5116
+result/meta_rprn.oracleGeneral.zst                  S3FIFO-0.1000-2 cache size  2903028, 88470732 req, miss ratio 0.4183, byte miss ratio 0.4183
