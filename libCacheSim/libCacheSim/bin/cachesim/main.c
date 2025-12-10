@@ -71,6 +71,7 @@ int main(int argc, char **argv) {
     printf("\nAdditional metrics\n%s\n", result[i].additional_metrics_print_string);
     fprintf(output_file, "%s", output_str);
     fprintf(output_file, "\nAdditional metrics\n%s\n", result[i].additional_metrics_print_string);
+    free(result[i].additional_metrics_print_string);
   }
   fclose(output_file);
 

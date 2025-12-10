@@ -88,6 +88,7 @@ void simulate(reader_t *reader, cache_t *cache, int report_interval,
   }
   fprintf(output_file, "%s\n", output_str);
   fprintf(output_file, "\nAdditional metrics\n%s\n", additional_metrics);
+  free(additional_metrics);
   fclose(output_file);
 
 #if defined(TRACK_EVICTION_V_AGE)
