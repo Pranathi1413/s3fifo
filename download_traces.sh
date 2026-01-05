@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+set -o errtrace
+trap 'code=$?; echo "ERR: code=$code  task=${SLURM_PROCID:-NA}  line=$LINENO  cmd: $BASH_COMMAND" >&2' ERR
 
 URLS_FILE="urls.txt"
 ROOT_DIR="libCacheSim/alldata"
@@ -37,7 +39,7 @@ download_one_url() {
   dest="$dest_dir/$new_filename"
   mkdir -p "$dest_dir"
 
-  # 6) If a non-empty file already exists at dest, skip; otherwise download resumably
+  # if a non-empty file already exists at dest, skip
   if [ -s "$dest" ]; then
     echo "Skip (exists): $dest"
   else
